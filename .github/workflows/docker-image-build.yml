@@ -37,4 +37,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: qinbatista/hysteria2-server:latest
           build-args: |
-             HYSTERIA_CONFIG_URL=${{ vars.HYSTERIA_CONFIG_URL }}
+             HYSTERIA_CONFIG_URL=${{ secrets.HYSTERIA_CONFIG_URL || vars.HYSTERIA_CONFIG_URL }}

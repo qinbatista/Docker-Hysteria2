@@ -1,6 +1,6 @@
 # Docker-Hysteria2
 
-Optimized defaults for China -> US access are included in `config.yaml`.
+This image expects server config from a remote URL (for example S3).
 
 ## Quick Start (7003 Default)
 
@@ -12,7 +12,7 @@ docker run -itd --restart=always \
   qinbatista/hysteria2-server:latest
 ```
 
-## Build With Your Own Remote Config (Optional)
+## Build With Your Remote Config URL (Required)
 
 ```bash
 docker build \
@@ -20,7 +20,7 @@ docker build \
   -t hysteria2-server:custom .
 ```
 
-If `HYSTERIA_CONFIG_URL` is not set, the build uses local `config.yaml`.
+If `HYSTERIA_CONFIG_URL` is empty or invalid, the build fails.
 
 ## High-Impact Host Tuning (US VPS)
 
@@ -58,7 +58,7 @@ Add a new server and select `Hysteria2`:
 
 - Address: `Your_Server_IP_or_Domain`
 - Port: `7003`
-- Password: value in `auth.password` from `config.yaml`
+- Password: value in `auth.password` from your remote config file
 - SNI: `www.bing.com`
 - Allow Insecure: `On` (self-signed cert)
 - Fast Open: `On`
