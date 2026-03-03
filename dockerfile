@@ -4,10 +4,16 @@ ARG HYSTERIA_CONFIG_URL
 
 WORKDIR /tmp
 # Install wget and openssl
-RUN apk add --no-cache wget openssl && \
-    wget -O config.yaml "${HYSTERIA_CONFIG_URL}" && \
+RUN apk add --no-cache wget openssl
+
+# Use local performance config by default, optionally override by URL.
+COPY config.yaml /tmp/config.yaml
+RUN if [ -n "${HYSTERIA_CONFIG_URL}" ]; then \
+      wget -O /tmp/config.yaml "${HYSTERIA_CONFIG_URL}"; \
+    fi && \
     # Generate self-signed certificate (valid for 10 years, CN=www.bing.com)
-    openssl req -x509 -newkey rsa:4096 -nodes -sha256 \
+    # RSA-2048 reduces handshake CPU cost compared with RSA-4096.
+    openssl req -x509 -newkey rsa:2048 -nodes -sha256 \
     -keyout server.key -out server.crt -days 3650 \
     -subj "/CN=www.bing.com"
 
